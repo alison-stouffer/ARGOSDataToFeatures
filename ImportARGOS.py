@@ -9,3 +9,8 @@
 ## Created: Fall 2020
 ## Author: alison.stouffer@duke.edu (for ENV859)
 ##---------------------------------------------------------------------
+
+#%% Import Packages
+
+#Import Modules
+import sys, os, arcpy
