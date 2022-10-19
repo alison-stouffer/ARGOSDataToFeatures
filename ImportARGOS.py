@@ -12,5 +12,11 @@
 
 #%% Import Packages
 
-#Import Modules
+#Import modules
 import sys, os, arcpy
+
+#%% Import Single File as File Object
+
+# Set input variables (hard-wired)
+inputFile = 'V:/ARGOSTracking/Data/ARGOSData/1997dg.txt'
+outputFC = "V:/ARGOSTracking/Scratch/ARGOStrack.shp"
