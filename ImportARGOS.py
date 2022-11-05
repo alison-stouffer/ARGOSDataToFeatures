@@ -34,6 +34,9 @@ arcpy.management.AddField(outputFC,"TagID","LONG")
 arcpy.management.AddField(outputFC,"LC","TEXT")
 arcpy.management.AddField(outputFC,"Date","DATE")
 
+# Create the insert cursor:
+cur = arcpy.da.InsertCursor(outputFC,['Shape@','TagID','LC','Date'])
+
 #%% Iterate Through All Lines in the Datafile
 
 # Open the ARGOS data file for reading:
@@ -67,9 +70,6 @@ while lineString:
         obsLat = line2Data[2]
         obsLon= line2Data[5]
         
-        # Print results to see how we're doing:
-        print (tagID,"Lat:"+obsLat,"Long:"+obsLon, "Date: "+date, "Time: "+time, "LC:"+locationClass)
-        
         # Try to convert coordinates to numbers:
         try:
             # Convert raw coordinate strings to numbers:
@@ -86,6 +86,13 @@ while lineString:
             obsPoint = arcpy.Point()
             obsPoint.X = obsLon
             obsPoint.Y = obsLat
+            
+            # Convert the point to a point geometry object with spatial reference:
+            inputSR = arcpy.SpatialReference(4326)
+            obsPointGeom = arcpy.PointGeometry(obsPoint,inputSR)
+            
+            # Create a feature object:
+            feature = cur.insertRow((obsPointGeom,tagID,locationClass,date.replace(".","/") + " " + time))
         
         #Handle any error:
         except Exception as e:
@@ -96,3 +103,6 @@ while lineString:
     
 #Close the file object:
 inputFileObj.close()
+
+#Delete the cursor object:
+del cur
