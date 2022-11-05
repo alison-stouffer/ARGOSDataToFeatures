@@ -17,10 +17,10 @@ import sys, os, arcpy
 
 #%% Import Single File as File Object & Create Empty Feature Class
 
-# Set input variables (hard-wired):
-inputFolder = 'V:/ARGOSTracking/Data/ARGOSData'
-outputSR = arcpy.SpatialReference(54002)
-outputFC = "V:/ARGOSTracking/Scratch/ARGOStrack.shp"
+# Set input variables:
+inputFolder = sys.argv[1] #'V:/ARGOSTracking/Data/ARGOSData'
+outputSR = sys.argv[2] #arcpy.SpatialReference(54002)
+outputFC = sys.argv[3] #"V:/ARGOSTracking/Scratch/ARGOStrack.shp"
 
 # Create list of files in folder:
 inputFiles = os.listdir(inputFolder)
@@ -50,7 +50,7 @@ for inputFile in inputFiles:
         continue
     
     # Provide status update:
-    print(f'Working on file {inputFile}')
+    arcpy.AddMessage(f'Working on file {inputFile}')
     
     #Prepend inputfile with path:
     inputFile = os.path.join(inputFolder,inputFile)
